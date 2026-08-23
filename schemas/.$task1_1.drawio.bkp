@@ -1,0 +1,48 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.6.4 Chrome/124.0.6367.207 Electron/30.0.6 Safari/537.36">
+  <diagram name="Page-1" id="-H_mtQnk-PTXWXPvYvuk">
+    <mxGraphModel dx="1291" dy="899" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="jiMyYKFrMQ8hM7IwWxSg-1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="shard_1" vertex="1">
+          <mxGeometry height="60" width="120" x="755" y="359" as="geometry" />
+        </mxCell>
+        <mxCell id="jiMyYKFrMQ8hM7IwWxSg-2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="shard_2" vertex="1">
+          <mxGeometry height="60" width="120" x="755" y="459" as="geometry" />
+        </mxCell>
+        <mxCell id="jiMyYKFrMQ8hM7IwWxSg-6" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="jiMyYKFrMQ8hM7IwWxSg-1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="695" y="439" />
+              <mxPoint x="695" y="389" />
+            </Array>
+            <mxPoint x="635" y="439" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="jiMyYKFrMQ8hM7IwWxSg-7" edge="1" parent="1" source="jiMyYKFrMQ8hM7IwWxSg-57" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" target="jiMyYKFrMQ8hM7IwWxSg-2">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="695" y="439" />
+              <mxPoint x="695" y="489" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="jiMyYKFrMQ8hM7IwWxSg-59" edge="1" parent="1" source="jiMyYKFrMQ8hM7IwWxSg-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="jiMyYKFrMQ8hM7IwWxSg-57">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="jiMyYKFrMQ8hM7IwWxSg-4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="pymongo-api" vertex="1">
+          <mxGeometry height="60" width="120" x="295" y="409" as="geometry" />
+        </mxCell>
+        <mxCell id="jiMyYKFrMQ8hM7IwWxSg-60" edge="1" parent="1" source="jiMyYKFrMQ8hM7IwWxSg-57" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;startArrow=classic;startFill=1;" target="jiMyYKFrMQ8hM7IwWxSg-58">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="jiMyYKFrMQ8hM7IwWxSg-57" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="mongos_router" vertex="1">
+          <mxGeometry height="60" width="120" x="505" y="409" as="geometry" />
+        </mxCell>
+        <mxCell id="jiMyYKFrMQ8hM7IwWxSg-58" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="configSrv" vertex="1">
+          <mxGeometry height="60" width="120" x="505" y="309" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

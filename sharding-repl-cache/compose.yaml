@@ -1,0 +1,167 @@
+name: sharding-repl-cache
+
+services:
+  # Python-приложение
+  pymongo_api:
+    container_name: pymongo_api
+    image: kazhem/pymongo_api:1.0.0
+    depends_on:
+      redis:
+        condition: service_healthy
+      mongo_init:
+        condition: service_completed_successfully
+    ports:
+      - "8080:8080"
+    environment:
+      MONGODB_URL: "mongodb://mongos_router:27020"
+      MONGODB_DATABASE_NAME: "somedb"
+      REDIS_HOST: "redis"
+      REDIS_PORT: "6379"
+      REDIS_URL: "redis://redis:6379"
+    networks:
+      - app-network
+
+  # Redis
+  redis:
+    image: redis:latest
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 3s
+      timeout: 2s
+      retries: 5
+
+  # Сервер конфигурации
+  configSrv:
+    image: mongo:latest
+    container_name: configSrv
+    restart: always
+    ports:
+      - "27017:27017"
+    networks:
+      - app-network
+    volumes:
+      - config-data:/data/db
+    command: [
+      "--configsvr",
+      "--replSet", "config_server",
+      "--bind_ip_all",
+      "--port", "27017"
+    ]
+
+  # 1-й шард (Группа репликации из 3-х узлов)
+  shard1-1:
+    image: mongo:latest
+    container_name: shard1-1
+    restart: always
+    ports:
+      - "27018:27018"
+    networks:
+      - app-network
+    volumes:
+      - shard1-1-data:/data/db
+    command: [ "--shardsvr", "--replSet", "shard1", "--bind_ip_all", "--port", "27018" ]
+
+  shard1-2:
+    image: mongo:latest
+    container_name: shard1-2
+    restart: always
+    networks:
+      - app-network
+    volumes:
+      - shard1-2-data:/data/db
+    command: [ "--shardsvr", "--replSet", "shard1", "--bind_ip_all", "--port", "27018" ]
+
+  shard1-3:
+    image: mongo:latest
+    container_name: shard1-3
+    restart: always
+    networks:
+      - app-network
+    volumes:
+      - shard1-3-data:/data/db
+    command: [ "--shardsvr", "--replSet", "shard1", "--bind_ip_all", "--port", "27018" ]
+
+  # 2-й шард (Группа репликации из 3-х узлов)
+  shard2-1:
+    image: mongo:latest
+    container_name: shard2-1
+    restart: always
+    ports:
+      - "27019:27019"
+    networks:
+      - app-network
+    volumes:
+      - shard2-1-data:/data/db
+    command: [ "--shardsvr", "--replSet", "shard2", "--bind_ip_all", "--port", "27019" ]
+
+  shard2-2:
+    image: mongo:latest
+    container_name: shard2-2
+    restart: always
+    networks:
+      - app-network
+    volumes:
+      - shard2-2-data:/data/db
+    command: [ "--shardsvr", "--replSet", "shard2", "--bind_ip_all", "--port", "27019" ]
+
+  shard2-3:
+    image: mongo:latest
+    container_name: shard2-3
+    restart: always
+    networks:
+      - app-network
+    volumes:
+      - shard2-3-data:/data/db
+    command: [ "--shardsvr", "--replSet", "shard2", "--bind_ip_all", "--port", "27019" ]
+
+  # Роутер mongos_router
+  mongos_router:
+    image: mongo:latest
+    container_name: mongos_router
+    depends_on:
+      - configSrv
+      - shard1-1
+      - shard2-1
+    restart: always
+    ports:
+      - "27020:27020"
+    networks:
+      - app-network
+    command: [
+      "mongos",
+      "--configdb", "config_server/configSrv:27017",
+      "--bind_ip_all",
+      "--port", "27020"
+    ]
+
+  # Автоматический инициализатор кластера
+  mongo_init:
+    image: mongo:latest
+    container_name: mongo_init
+    depends_on:
+      - mongos_router
+    volumes:
+      - ./scripts/mongo-config.sh:/mongo-config.sh:ro
+    networks:
+      - app-network
+    entrypoint: ["bash", "-c"]
+    command: "/mongo-config.sh"
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  config-data:
+  shard1-1-data:
+  shard1-2-data:
+  shard1-3-data:
+  shard2-1-data:
+  shard2-2-data:
+  shard2-3-data:
